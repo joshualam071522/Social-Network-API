@@ -9,9 +9,9 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    async getthoughtById({ params }, res) {
+    async getThoughtById( req , res) {
         try {
-            const thought = await Thought.findById({ _id: params.id })
+            const thought = await Thought.findOne({ _id: req.params.id })
             .populate({
                 path: 'reactions',
                 select: '-__v'
