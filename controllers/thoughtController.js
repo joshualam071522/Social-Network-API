@@ -119,14 +119,3 @@ module.exports = {
         }
     },
 };
-
-
-
-//* need put route to update thought by id
-
-
-//* need delete route to remove thought by id
-
-//* need post route to add a new reaction to a thought
-
-//* need delete route to remove a reaction from a thought

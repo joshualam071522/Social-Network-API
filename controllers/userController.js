@@ -33,15 +33,83 @@ module.exports = {
             res.status(400).json(err);
         }
     },
-}
+    async updateUser(req, res) {
+        try {
+            const user = await User.findOneAndUpdate({ _id: req.params.id },
+                { $set: req.body },
+                { runValidators: true, new: true }
+            );
+            if (!user) {
+                res.status(404).json({ message: 'No user found with this id!' });
+                return;
+            }
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+    async deleteUser(req, res) {
+        try {
+            const userThoughts = await User.find
 
-//* need put route to update user by id
+            const user = await User.findOneAndDelete({ _id: req.params.id });
+            if (!user) {
+                res.status(404).json({ message: 'No user found with this id!' });
+                return;
+            }
+            res.status(200).json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+    async addFriend(req, res) {
+        const { userId, friendId } = req.params;
+        try { 
+            const user = await User.findOneAndUpdate(
+                { _id: userId },
+                { $addToSet: { friends: friendId } },
+                { new: true }
+            );
+            if (!user) {
+                res.status(404).json({ message: 'No user found with this id!' });
+                return;
+            }
 
-//* need delete route to remove user by id
+            const friend = await User.findOne({ _id: friendId });
+            if (!friend) {
+                res.status(404).json({ message: 'No friend found with this id!' });
+                return;
+            }
+            res.status(200).json(` ${friend.username} added to ${user.username}'s friend list!`);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+    async deleteFriend(req, res) {
+        const { userId, friendId } = req.params;
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: userId },
+                { $pull: { friends: friendId } },
+                { new: true }
+            );
+            if (!user) {
+                res.status(404).json({ message: 'No user found with this id!' });
+                return;
+            }
 
-//* bonus: remove a user's associated thoughts when deleted
+            const friend = await User.findOne({ _id: friendId });
+            if (!friend) {
+                res.status(404).json({ message: 'No friend found with this id!' });
+                return;
+            }
+            res.status(200).json(` ${friend.username} removed from ${user.username}'s friend list!`);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+};
 
-//* need post route to add a new friend to a user's friend list
+//TODO bonus: remove a user's associated thoughts when deleted. use pre?
 
-//* need delete route to remove a friend from a user's friend list
 
