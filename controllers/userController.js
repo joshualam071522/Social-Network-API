@@ -1,4 +1,4 @@
-const User = require('../models');
+const { User }  = require('../models');
 
 module.exports = {
     async getAllUsers(req, res) {
@@ -32,6 +32,16 @@ module.exports = {
         } catch (err) {
             res.status(400).json(err);
         }
-    }
+    },
 }
+
+//* need put route to update user by id
+
+//* need delete route to remove user by id
+
+//* bonus: remove a user's associated thoughts when deleted
+
+//* need post route to add a new friend to a user's friend list
+
+//* need delete route to remove a friend from a user's friend list
 

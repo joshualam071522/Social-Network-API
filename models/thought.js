@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
+//* helper function to format date
+const formattedDate = require('date-and-time');
 
 //* child schema for thought schema
 const reactionSchema = new mongoose.Schema({
-    reactionId: {type: mongoose.Schema.Types.ObjectId, default: () => new Types.ObjectId()},
-    reactionBody: {type: String, required: true, maxlength: 280},
+    reactionId: {type: mongoose.Schema.Types.ObjectId, default: () => new mongoose.Types.ObjectId()},
+    reactionText: {type: String, required: true, maxlength: 280},
     username: {type: String, required: true},
     //* getter to format timestamp
-    createdAt: {type: Date, default: Date.now, get: createdAtVariable => dateFormat(createdAtVariable)}
+    createdAt: {type: Date, default: Date.now, get: createdAtVariable => formattedDate.format(createdAtVariable, 'MMM DD, YYYY [at] HH:mm:ss')}
 },
 {
     toJSON: {
