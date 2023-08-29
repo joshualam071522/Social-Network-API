@@ -19,7 +19,7 @@ const reactionSchema = new mongoose.Schema({
 
 const thoughtSchema = new mongoose.Schema({
     thoughtText: {type: String, required: true, minlength: 1, maxlength: 280},
-    createdAt: {type: Date, default: Date.now},
+    createdAt: {type: Date, default: Date.now, get: createdAtVariable => formattedDate.format(createdAtVariable, 'MMM DD, YYYY [at] HH:mm:ss')},
     username: {type: String, required: true},
     reactions: [reactionSchema]
 },
