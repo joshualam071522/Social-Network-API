@@ -9,9 +9,9 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    async getUserById({ params }, res) {
+    async getUserById(req, res) {
         try {
-            const user = await User.findById({ _id: params.id })
+            const user = await User.findById({ _id: req.params.userId })
             .populate({
                 path: 'thoughts',
                 select: '-__v'
@@ -35,7 +35,7 @@ module.exports = {
     },
     async updateUser(req, res) {
         try {
-            const user = await User.findOneAndUpdate({ _id: req.params.id },
+            const user = await User.findOneAndUpdate({ _id: req.params.userId },
                 { $set: req.body },
                 { runValidators: true, new: true }
             );
@@ -50,9 +50,7 @@ module.exports = {
     },
     async deleteUser(req, res) {
         try {
-            const userThoughts = await User.find
-
-            const user = await User.findOneAndDelete({ _id: req.params.id });
+            const user = await User.findOneAndDelete({ _id: req.params.userId });
             if (!user) {
                 res.status(404).json({ message: 'No user found with this id!' });
                 return;
